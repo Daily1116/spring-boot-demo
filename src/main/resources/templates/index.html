@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>首页</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}" />
+</head>
+<body>
+<p th:text="${name}">Hello</p>
+<div th:if="${not #lists.isEmpty(list)}">
+    <p th:each="item:${list}">
+        <span th:text="${item}"></span>
+    </p>
+</div>
+</body>
+</html>

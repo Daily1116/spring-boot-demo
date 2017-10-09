@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+    <!-- 指定数据连接驱动jar地址 -->
+    <!--<classPathEntry location="D:\ojdbc14-1.0.jar" />-->
+
+    <!-- 一个数据库一个context -->
+    <context id="OracleTables">
+        <!-- 注释 -->
+        <!--<commentGenerator type="com.caissa.operation.web.MyCommentGenerator">-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/><!-- 是否取消注释 -->
+            <property name="suppressDate" value="true" /> <!-- 是否生成注释代时间戳-->
+        </commentGenerator>
+
+        <!-- jdbc连接 -->
+        <jdbcConnection driverClass=""
+                        connectionURL=""
+                        userId=""
+                        password="" />
+
+        <!-- 类型转换 -->
+        <javaTypeResolver>
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 生成实体类地址 -->
+        <javaModelGenerator targetPackage="com.spring.boot.demo.model"
+                            targetProject="src/main/java" >
+            <!-- 是否在当前路径下新加一层schema,eg：fase路径com.caissa.operation.domain.po， true:com.caissa.operation.domain.po.[schemaName] -->
+            <property name="enableSubPackages" value="false"/>
+            <!-- 是否针对string类型的字段在set的时候进行trim调用 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成mapxml文件 -->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="src/main/resources" >
+            <!-- 是否在当前路径下新加一层schema,eg：fase路径com.caissa.operation.domain.po， true:com.caissa.operation.domain.po.[schemaName] -->
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+        <!-- 生成mapxml对应client，也就是接口dao -->
+        <javaClientGenerator targetPackage="com.spring.boot.demo.mapper"
+                             targetProject="src/main/java" type="XMLMAPPER" >
+            <!-- 是否在当前路径下新加一层schema,eg：fase路径com.caissa.operation.domain.po， true:com.caissa.operation.domain.po.[schemaName] -->
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+
+        <!-- 配置表信息 -->
+
+        <table schema=""
+               tableName=""
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false">
+        </table>
+
+    </context>
+</generatorConfiguration>

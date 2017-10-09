@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.demo.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.spring.boot.demo.model.User" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID,NAME
+  </sql>
+
+  <select id="getAllUsers" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from USER
+  </select>
+
+</mapper>

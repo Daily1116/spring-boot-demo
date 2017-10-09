@@ -1,0 +1,71 @@
+server:
+  port: 8081
+  tomcat:
+    uri-encoding: UTF-8
+  context-path: /captain
+debug: false
+
+#Druid
+spring:
+  datasource:
+    druid:
+      url:
+      driver-class-name:
+      username:
+      password:
+      initial-size:
+      min-idle:
+      max-active:
+      test-while-idle:
+      test-on-return:
+      test-on-borrow:
+      filters:
+      filter:
+        stat:
+          db-type:
+          log-slow-sql:
+          slow-sql-millis:
+#thymeleaf
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+    mode: HTML5
+    encoding: UTF-8
+    content-type: text/html
+
+#mybatis
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  config-location: classpath:config/mybatis-config.xml
+  type-aliases-package: com.spring.boot.demo.model
+wechat:
+  mp:
+    app-id:
+    secret:
+    aes-key:
+    token:
+
+#weixin
+
+#dubbo 在此使用yml配置报错，移到application.properties正常,原因未知，应该跟dubbo-starter有关，后期有时间研究一下
+# Dubbo 服务消费者配置
+#spring:
+#  datasource:
+#    application:
+#      name: captain-mobile-consumer
+#    scan:
+#    registry:
+#      protocol: zookeeper
+#      address:
+# Dubbo 服务提供者配置
+#spring:
+#  dubbo:
+#    application:
+#      name: provider
+#    registry:
+#      address:
+#    protocol:
+#      name: dubbo
+#      port: 20880
+#      scan:
