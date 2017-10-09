@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 定义相关变量 -->
+    <property name="APP_NAME" value=""/>
+    <property name="LOG_PATH" value=""/>
+
+    <!--引入默认的一些设置-->
+    <!--<include resource="org/springframework/boot/logging/logback/base.xml"/>-->
+
+    <!--<logger name="org.springframework.web" level="INFO" />-->
+
+    <!-- 开发过程中使用，将日志输出到控制台，用于生产时要关闭 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%highlight(%-5level)] [%logger{50}:%L] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 用于记录排障使用的系统日志，在日志中需要输出用户的操作轨迹与系统处理轨迹，应当记录INFO及以上级别的日志 -->
+    <appender name="SYS_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 是否继续上次内容进行输出 -->
+        <append>true</append>
+        <!-- 定义当前输出文件路径 -->
+        <file>${LOG_PATH}/${APP_NAME}_info.log</file>
+        <!-- 定义日志文件的滚动方式是按天的方式进行备份 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_PATH}/${APP_NAME}_info.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <!-- 定义日志文件保留天数 -->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <!-- 格式化输出 -->
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%-5level][%logger{80}:%L] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 用于记录系统运行过程中所有产生的ERROR级别的日志，且只记录ERROR级别 -->
+    <appender name="SYS_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${APP_NAME}_error.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}_error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%-5level][%logger{80}:%L] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--异步到文件-->
+    <appender name="asyncFileAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>500</queueSize>
+        <appender-ref ref="SYS_INFO"/>
+        <appender-ref ref="SYS_ERROR"/>
+    </appender>
+
+    <!--开发环境:打印控制台-->
+    <springProfile name="dev">
+        <!-- sqlSession sql -->
+        <!--<logger name="org.mybatis" level="DEBUG"/>-->
+        <!--<logger name="druid.sql" level="DEBUG"/>-->
+        <!-- 指定某个记录器、包、类的日志级别 -->
+        <!--微信sdk log-->
+        <logger name="me.chanjar" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE" />
+            <!--<appender-ref ref="SYS_INFO" />-->
+            <!--<appender-ref ref="SYS_ERROR" />-->
+        </logger>
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <!--测试环境:打印控制台-->
+    <springProfile name="test">
+        <!-- 指定某个记录器、包、类的日志级别 -->
+
+        <root level="info">
+            <appender-ref ref="asyncFileAppender"/>
+        </root>
+    </springProfile>
+
+    <!--预发布环境:输出到文件-->
+    <springProfile name="pre">
+        <root level="info">
+            <appender-ref ref="asyncFileAppender"/>
+        </root>
+    </springProfile>
+
+    <!--生产环境:输出到文件-->
+    <springProfile name="prod">
+        <root level="info">
+            <appender-ref ref="asyncFileAppender"/>
+        </root>
+    </springProfile>
+
+</configuration>
